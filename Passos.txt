@@ -1,0 +1,12 @@
+1) Fazer tela inicial responsiva, contendo tijolos, a bola, a raquete, o placar ...
+    1.1 Desenhar quadro geral, tela preta
+    1.2 Desenhar board de jogo e placar
+    1.3 Fazer tijolos
+    1.4 Desenhar a bola
+
+2) Fazer a bola movimentar e detectar colisões com as paredes, raquetes de blocos
+    2.1) Detectar as colisões com as paredes
+    2.2) Detectar as colisões com a raquete
+3) Movimentar a raquete
+4) fazer a raquete se movimentar com o mouse
+
