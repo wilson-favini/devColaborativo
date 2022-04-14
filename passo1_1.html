@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakout Daniel</title>
+    <script>
+
+
+        function scroolBarWidth(){
+            let aux1 = Number(document.body.clientWidth);
+            let aux2 = Number(window.innerWidth);
+            let diff = (aux2-aux1);
+            //console.log('sb:' + diff);
+            return diff;
+        }
+
+        
+        function drawMainSquare(mySvg,h,w){            
+            let myMainSquare = document.getElementById('myMainSquare');
+            let sw = 10;
+            let fill = 'lightgray';
+            if(myMainSquare == null){     
+                myMainSquare = document.createElementNS("http://www.w3.org/2000/svg",'rect');                        
+                myMainSquare.setAttribute('id','myMainSquare');               
+                mySvg.appendChild(myMainSquare);            
+            }
+            let theStyle = style="fill:"+fill+";stroke:blue;stroke-width:"+sw+";padding:0";
+            myMainSquare.setAttribute('x','0');
+            myMainSquare.setAttribute('y','0');
+            myMainSquare.setAttribute('width',w);
+            myMainSquare.setAttribute('height',h);           
+            myMainSquare.setAttribute('style',theStyle);
+            
+        }
+
+
+        function drawScreen(){
+            //Pegar o tamanho da tela
+            let h = window.innerHeight;
+            let w = window.innerWidth;
+            let sb = scroolBarWidth()+4;
+            w -=sb;
+            h -=sb;
+
+            //Desenhar um quadrado preto com borda azul, cobrindo toda a tela
+            document.body.style.margin = "0px";
+            let mySvg = document.getElementById('mySvg');
+            mySvg.setAttribute('width',w);
+            mySvg.setAttribute('height',h);
+            drawMainSquare(mySvg,h,w);
+        }
+
+        window.onload = drawScreen;
+        window.onresize = drawScreen;
+    </script>
+</head>
+<body>
+    <svg id="mySvg"></svg>
+</body>
+</html>
