@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Breakout Daniel</title>
+    <script>
+
+
+        function scroolBarWidth(){
+            let aux1 = Number(document.body.clientWidth);
+            let aux2 = Number(window.innerWidth);
+            let diff = (aux2-aux1);
+            //console.log('sb:' + diff);
+            return diff;
+        }
+
+        
+        function drawMainSquare(mySvg,h,w){            
+            let myMainSquare = document.getElementById('myMainSquare');
+            let sw = strokeMainSquare;
+            let fill = 'lightgray';
+            if(myMainSquare == null){     
+                myMainSquare = document.createElementNS("http://www.w3.org/2000/svg",'rect');                        
+                myMainSquare.setAttribute('id','myMainSquare');               
+                mySvg.appendChild(myMainSquare);            
+            }
+            let theStyle = style="fill:"+fill+";stroke:blue;stroke-width:"+sw+";padding:0";
+            myMainSquare.setAttribute('x','0');
+            myMainSquare.setAttribute('y','0');
+            myMainSquare.setAttribute('width',w);
+            myMainSquare.setAttribute('height',h);           
+            myMainSquare.setAttribute('style',theStyle);
+            
+        }
+
+        function drawPlacar(){
+            let myPlacar = document.getElementById('myPlacar');            
+            let fill = 'red';
+            let stroke = 'blue';
+            let fs = 30;
+            let x = 10;   
+            let y = heightPlacar-10;       
+            if( myPlacar  == null){     
+                myPlacar = document.createElementNS("http://www.w3.org/2000/svg",'text');                        
+                myPlacar.setAttribute('id','myPlacar');               
+                mySvg.appendChild(myPlacar);            
+            }
+            let theStyle = style="fill:"+fill+";font: bold "+fs+"px sans-serif;";
+            myPlacar.textContent = "PLACAR: " + placar;
+            myPlacar.setAttribute('x',x);
+            myPlacar.setAttribute('y',y);
+            myPlacar.setAttribute('style',theStyle)
+
+        }
+
+        function drawGameBoard(mySvg,h,w){
+            let myGameBoard = document.getElementById('myGameBoard');
+            let sw = strokeMainSquare;
+            let fill = 'black';
+            let stroke = 'blue';
+            let x = 0;
+            let w2 = w;
+            let h2 = h-heightPlacar;
+            if(myGameBoard == null){     
+                myGameBoard = document.createElementNS("http://www.w3.org/2000/svg",'rect');                        
+                myGameBoard.setAttribute('id','myGameBoard');               
+                mySvg.appendChild(myGameBoard);            
+            }
+            let theStyle = style="fill:"+fill+";stroke:"+stroke+";stroke-width:"+sw+";padding:0";
+            myGameBoard.setAttribute('x',x);
+            myGameBoard.setAttribute('y',heightPlacar);
+            myGameBoard.setAttribute('width',w2);
+            myGameBoard.setAttribute('height',h2);           
+            myGameBoard.setAttribute('style',theStyle);            
+        }
+
+        function drawTijolos(mySvg){            
+            for(let i in cenaGame.tijolos){
+                let linha = cenaGame.tijolos[i].linha;
+                let coluna = cenaGame.tijolos[i].coluna;
+                drawTijolo(mySvg,linha,coluna);
+            }
+        }
+
+        function drawRaquete(mySvg){
+
+            //A largura da raquete é 15%
+            //A altura da raquete é 3%
+            //A posicao inicial da raquete é no meio da GameBoard em baixo
+            
+            let myGameBoard = document.getElementById('myGameBoard');
+            let yGB = Number(myGameBoard.getAttribute('y'));
+            let xGB = Number(myGameBoard.getAttribute('x'));
+            let hGB = Number(myGameBoard.getAttribute('height'));
+            let wGB = Number(myGameBoard.getAttribute('width'));
+            let tRaquete = Math.round((wGB/100)*(cenaGame.raquete.tamanho));
+            let hRaquete = Math.round((wGB/100)*(cenaGame.raquete.altura));
+            let xRaqueteMeio = Math.round(xGB + ((wGB/100)*cenaGame.raquete.x) );
+            let xRaquete = Math.round(xRaqueteMeio - (tRaquete/2));
+            let yRaquete = yGB + hGB - hRaquete;
+                       
+            let myRaquete = document.getElementById('myRaquete'); 
+            if(myRaquete == null){
+                myRaquete = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+                myRaquete.setAttribute('id','myRaquete');
+                mySvg.appendChild(myRaquete);
+            }
+            let fill = 'blue';
+            let stroke = 'white';
+            let sw = 1;
+            let theStyle = style="fill:"+fill+";stroke:"+stroke+";stroke-width:"+sw+";padding:0";
+            myRaquete.setAttribute('x',xRaquete);
+            myRaquete.setAttribute('y',yRaquete);
+            myRaquete.setAttribute('width',tRaquete);
+            myRaquete.setAttribute('height',hRaquete);
+            myRaquete.setAttribute('style',theStyle);
+
+        }
+
+
+        function drawTijolo(mySvg,linha, coluna){
+            //A linha 1 vai ficar nos primeiros 10%, a linha 2 nos 20% e a linha 3 nos 30%
+            //Temos 5 colunas de tijolos em cada linha
+            //Cada tijolo pode ter o tamanho de 10%, com distância de 5% entre cada tijolo. 
+            //nas bordas teríamos uma distância de 15%
+            //15% t1 5% t2 5% t3 5% t4 5% t5 15%
+            //A altura do tijolo é 8%
+            
+            let myGameBoard = document.getElementById('myGameBoard');
+            let yGB = Number(myGameBoard.getAttribute('y'));
+            let xGB = Number(myGameBoard.getAttribute('x'));
+            let hGB = Number(myGameBoard.getAttribute('height'));
+            let wGB = Number(myGameBoard.getAttribute('width'));
+            let dBorda = Math.round((wGB/100)*15);
+            let dTijolo = Math.round((wGB/100)*5);
+            let tTijolo = Math.round(wGB/10);
+            let hTijolo = Math.round((hGB/100)*8);
+
+            let yTijolo  = yGB + (linha*Math.round(hGB/10));
+            let xTijolo = xGB + dBorda + (coluna -1)*(tTijolo+dTijolo);
+            let idTijolo = 'myTijolo'+linha+'_'+coluna;
+            let myTijolo = document.getElementById(idTijolo); //myTijo1_1 <- tijolo linha 1, coluna 1
+            if(myTijolo == null){
+                myTijolo = document.createElementNS("http://www.w3.org/2000/svg", 'rect');
+                myTijolo.setAttribute('id',idTijolo);
+                mySvg.appendChild(myTijolo);
+            }
+            let fill = 'blue';
+            let stroke = 'white';
+            let sw = 1;
+            let theStyle = style="fill:"+fill+";stroke:"+stroke+";stroke-width:"+sw+";padding:0";
+            myTijolo.setAttribute('x',xTijolo);
+            myTijolo.setAttribute('y',yTijolo);
+            myTijolo.setAttribute('width',tTijolo);
+            myTijolo.setAttribute('height',hTijolo);
+            myTijolo.setAttribute('style',theStyle);
+
+        }
+
+        function drawScreen(){
+            //Pegar o tamanho da tela
+            let h = window.innerHeight;
+            let w = window.innerWidth;
+            let sb = scroolBarWidth()+4;
+            w -=sb;
+            h -=sb;
+
+            //Desenhar um quadrado preto com borda azul, cobrindo toda a tela
+            document.body.style.margin = "0px";
+            let mySvg = document.getElementById('mySvg');
+            mySvg.setAttribute('width',w);
+            mySvg.setAttribute('height',h);
+            drawMainSquare(mySvg,h,w);
+            drawGameBoard(mySvg,h,w);
+            drawPlacar(mySvg);
+            drawTijolos(mySvg);
+            drawRaquete(mySvg);
+        }
+
+        let strokeMainSquare = 10;
+        let heightPlacar = 50;
+        let placar = 0;
+        let cenaGame = {
+            "tijolos":[
+                {"linha":1, "coluna":1},{"linha":1, "coluna":2},{"linha":1, "coluna":3},{"linha":1, "coluna":4},{"linha":1, "coluna":5},
+                {"linha":2, "coluna":1},{"linha":2, "coluna":2},{"linha":2, "coluna":3},{"linha":2, "coluna":4},{"linha":2, "coluna":5},                
+                {"linha":3, "coluna":1},{"linha":3, "coluna":2},{"linha":3, "coluna":3},{"linha":3, "coluna":4},{"linha":3, "coluna":5},
+            ],
+            "bola":{"x":0,"y":0,"cor":"blue","dx":0,"dy":1},
+            "raquete":{"x":50,"tamanho":15,"altura":2}
+        }
+        window.onload = drawScreen;
+        window.onresize = drawScreen;
+    </script>
+</head>
+<body>
+    <svg id="mySvg"></svg>
+</body>
+</html>
