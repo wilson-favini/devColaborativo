@@ -1,0 +1,84 @@
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   passo1_1.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git config global user.name "Caio Rodrigues"
+error: key does not contain a section: global
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git status
+On branch main
+Your branch is up to date with 'origin/main'.
+
+Changes not staged for commit:
+  (use "git add <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        modified:   passo1_1.html
+
+no changes added to commit (use "git add" and/or "git commit -a")
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git add passo1_1.html
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git commit -m "Mudancas dev1"
+[main 0038f05] Mudancas dev1
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git push origin
+Enumerating objects: 5, done.
+Counting objects: 100% (5/5), done.
+Delta compression using up to 4 threads
+Compressing objects: 100% (3/3), done.
+Writing objects: 100% (3/3), 298 bytes | 298.00 KiB/s, done.
+Total 3 (delta 2), reused 0 (delta 0), pack-reused 0
+remote: Resolving deltas: 100% (2/2), completed with 2 local objects.
+To https://github.com/wilson-favini/devColaborativo.git
+   29d01f3..0038f05  main -> main
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git branch dev2
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (main)
+$ git checkout dev2
+Switched to branch 'dev2'
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (dev2)
+$ git branch
+* dev2
+  main
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (dev2)
+$ git add passo1_1.html
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (dev2)
+$ git commit -m "Mudanças dev2 - branch dev2"
+On branch dev2
+nothing to commit, working tree clean
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (dev2)
+$ git checkout master
+Switched to a new branch 'master'
+branch 'master' set up to track 'origin/master'.
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (master)
+$ git pull
+Already up to date.
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (master)
+$ git merge dev2
+fatal: refusing to merge unrelated histories
+
+Caiuu@DESKTOP-NDR03DO MINGW64 ~/Downloads/breakout/breakout/A/devColaborativo (master)
+$ ^C
